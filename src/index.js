@@ -1,15 +1,16 @@
+//React library is divided into two React and React Dom
+//So we need to import both of them
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import ReactDom from 'react-dom';
 
-import App from './components/app';
-import reducers from './reducers';
+//Create a new component this component will produce some html document 
+//using es6 arrow function to do so
+const App = ()=>{
+    //it will contain jsx type code
+    return <div>Hi!</div>
+}
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
-
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+//Now we need to take this component and add it to the dom 
+//Here the concept of component class and component instance take place
+//We will create the instance of the App constant and pass it to the function and also pass the target dom which is container in the index.html file
+ReactDom.render(<App />, document.querySelector('.container'));
