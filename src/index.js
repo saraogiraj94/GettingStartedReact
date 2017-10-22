@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import YTSearch from 'youtube-api-search';
+import _ from 'lodash';
 
 import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
@@ -28,19 +29,34 @@ class App extends Component{
     constructor(props){
         super(props);
         //We will set the properties of state as the list and we will not keep it empty and show user some videos
-        this.state= { videos:[] };
-        YTSearch({key:API_KEY, term : 'Surfboards'},(data)=>{
-            console.log(data);
-            this.setState({videos:data});
-        })
+        this.state= { 
+            videos:[],
+            selectedVideo:null
+        };
+       
+        this.videoSearch('surfboards');
     }   
 
+    videoSearch(term){
+        YTSearch({key:API_KEY, term :term},(data)=>{
+            console.log(data);
+            this.setState({videos:data,selectedVideo:data[0]});
+            
+        })
+    }
+
+    
+
     render(){
+        const videoSearch = _.debounce((term)=>{this.videoSearch(term)},500);
         return(
             <div>
-                <SearchBar/>
-                <VideoDetail video={this.state.videos[0]}/>    
-                <VideoList videos={this.state.videos}/>
+                <SearchBar onSearchTermChange={ videoSearch } />
+                <VideoDetail video={this.state.selectedVideo}/>    
+                <VideoList 
+                    //here is a function which we are passing to prop
+                    onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+                    videos={this.state.videos} />
             </div>
         )
     }

@@ -5,7 +5,10 @@ import VideoListItem from './video_list_item';
 const VideoList = (props)=>{
     //For addding the css class with ClassName
     const videoItems = props.videos.map((video)=>{
-      return <VideoListItem key={video.etag} video={video} />  
+      return <VideoListItem 
+              key={video.etag} 
+              onVideoSelect={props.onVideoSelect}
+              video={video} />  
     });
 
 
